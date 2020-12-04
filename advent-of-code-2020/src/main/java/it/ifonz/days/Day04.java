@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import it.ifonz.common.FileReader;
 
 public class Day04 {
 
 	public static void main(String[] args) throws URISyntaxException, IOException {
 		var lines = FileReader.readLines("src/main/resources/d04.txt");
+		part1(lines);
 		part2(lines);
-//		part1(lines);
 	}
 
 	public static void part1(List<String> input) {
@@ -44,6 +46,7 @@ public class Day04 {
 				sb = new StringBuilder();
 			}
 		}
+		passports.add(sb.toString());
 
 		var c = passports.stream().filter(passport -> {
 			var fields = passport.split(" ");
@@ -54,44 +57,35 @@ public class Day04 {
 				case "byr":
 					var byr = Integer.parseInt(kv[1]);
 					yield (byr >= 1920 && byr <= 2002) ? 1 : 0 ;
-//				case "iyr":
-//					var yir = Integer.parseInt(kv[1]);
-//					yield (yir >= 2010 && yir <= 2020) ? 1 : 0 ;
-//				case "eyr":
-//					var eyr = Integer.parseInt(kv[1]);
-//					yield (eyr >= 2020 && eyr <= 2030) ? 1 : 0 ;
-//				case "hgt": {
-//					var unit = kv[1].substring(kv[1].length()-2);
-//					var hgt = Integer.parseInt(kv[1].substring(kv[1].length()-2));
-//					if ("cm".equals(unit)) {
-//						yield (hgt >= 150 && hgt <= 193) ? 1 : 0;
-//					} else if ("in".equals(unit)) {
-//						yield (hgt >= 59 && hgt <= 76) ? 1 : 0;
-//					}
-//					yield 0;
-//				}
-//				case "hcl":
-//					if (kv[1].charAt(0) == '#' && kv[1].length() == 7) {
-//						try {
-//							Integer.parseInt(kv[1].substring(1), 16);
-//							yield 1;
-//						} catch(NumberFormatException nfe) {
-//							yield 0;
-//						}
-//					}
-//					yield 0;
-//				case "ecl": {
-//					var accepted = new String[] {"amb","blu","brn","gry","grn","hzl","oth"};
-//					yield (Arrays.stream(accepted).anyMatch(a -> a.equals(kv[1]))) ? 1 : 0;
-//				}
+				case "iyr":
+					var yir = Integer.parseInt(kv[1]);
+					yield (yir >= 2010 && yir <= 2020) ? 1 : 0 ;
+				case "eyr":
+					var eyr = Integer.parseInt(kv[1]);
+					yield (eyr >= 2020 && eyr <= 2030) ? 1 : 0 ;
+				case "hgt": {
+					if (kv[1].length() < 4) yield 0;
+					var unit = kv[1].substring(kv[1].length()-2);
+					var hgt = Integer.parseInt(kv[1].substring(0,kv[1].length()-2));
+					if ("cm".equals(unit)) {
+						yield (hgt >= 150 && hgt <= 193) ? 1 : 0;
+					} else if ("in".equals(unit)) {
+						yield (hgt >= 59 && hgt <= 76) ? 1 : 0;
+					}
+					yield 0;
+				}
+				case "hcl":
+					if (kv[1].charAt(0) == '#' && kv[1].length() == 7) {
+						yield NumberUtils.isCreatable("0x"+kv[1].substring(1)) ? 1 : 0;
+					}
+					yield 0;
+				case "ecl": {
+					var accepted = new String[] {"amb","blu","brn","gry","grn","hzl","oth"};
+					yield (Arrays.stream(accepted).anyMatch(a -> a.equals(kv[1]))) ? 1 : 0;
+				}
 				case "pid": {
 					if (kv[1].length() == 9) {
-						try {
-							Integer.parseInt(kv[1]);
-							yield 1;
-						} catch(NumberFormatException nfe) {
-							yield 0;
-						}
+						yield NumberUtils.isParsable(kv[1]) ? 1 : 0;
 					}
 					yield 0;
 				}

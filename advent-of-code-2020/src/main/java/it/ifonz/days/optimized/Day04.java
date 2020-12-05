@@ -1,4 +1,4 @@
-package it.ifonz.days;
+package it.ifonz.days.optimized;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -22,14 +22,13 @@ public class Day04 {
 		var passports = new ArrayList<String>();
 		var sb = new StringBuilder();
 		for (var s : input) {
-			if (!s.isBlank()) {
-				sb.append(s + " ");
-			} else {
+			if (s.isBlank()) {
 				passports.add(sb.toString());
 				sb = new StringBuilder();
+			} else {
+				sb.append(s + " ");
 			}
 		}
-		passports.add(sb.toString());
 		System.out.println(passports.stream().filter(p -> {
 			var tokens = p.split(" ");
 			return Arrays.stream(tokens).filter(f -> !f.substring(0, 3).equals("cid")).count() == 7;
@@ -49,6 +48,7 @@ public class Day04 {
 		}
 		passports.add(sb.toString());
 
+		var accepted = new String[] {"amb","blu","brn","gry","grn","hzl","oth"};
 		var c = passports.stream().filter(passport -> {
 			var fields = passport.split(" ");
 			var valid = 0;
@@ -68,27 +68,19 @@ public class Day04 {
 					if (kv[1].length() < 4) yield 0;
 					var unit = kv[1].substring(kv[1].length()-2);
 					var hgt = Integer.parseInt(kv[1].substring(0,kv[1].length()-2));
-					if ("cm".equals(unit)) {
-						yield (hgt >= 150 && hgt <= 193) ? 1 : 0;
-					} else if ("in".equals(unit)) {
-						yield (hgt >= 59 && hgt <= 76) ? 1 : 0;
-					}
-					yield 0;
+					yield switch(unit) {
+					case "cm": yield (hgt >= 150 && hgt <= 193) ? 1 : 0;
+					case "in": yield (hgt >= 59 && hgt <= 76) ? 1 : 0;
+					default: yield 0;
+					};
 				}
 				case "hcl":
-					if (kv[1].charAt(0) == '#' && kv[1].length() == 7) {
-						yield NumberUtils.isCreatable("0x"+kv[1].substring(1)) ? 1 : 0;
-					}
-					yield 0;
+					yield kv[1].charAt(0) == '#' && kv[1].length() == 7 && NumberUtils.isCreatable("0x"+kv[1].substring(1)) ? 1 : 0;
 				case "ecl": {
-					var accepted = new String[] {"amb","blu","brn","gry","grn","hzl","oth"};
 					yield (Arrays.stream(accepted).anyMatch(a -> a.equals(kv[1]))) ? 1 : 0;
 				}
 				case "pid": {
-					if (kv[1].length() == 9) {
-						yield NumberUtils.isParsable(kv[1]) ? 1 : 0;
-					}
-					yield 0;
+					yield kv[1].length() == 9 && NumberUtils.isParsable(kv[1]) ? 1 : 0;
 				}
 				default:
 					yield 0;

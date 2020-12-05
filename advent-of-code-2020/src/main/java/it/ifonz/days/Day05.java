@@ -39,7 +39,7 @@ public class Day05 {
 					default: break;
 				}
 			}
-			return rowLowerBound * 8 + 5;
+			return rowLowerBound * 8 + columnLowerBound;
 		}).max().getAsDouble();
 		System.out.println(max);
 	}

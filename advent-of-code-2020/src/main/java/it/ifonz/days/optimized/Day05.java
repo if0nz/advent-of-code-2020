@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import it.ifonz.common.FileReader;
 
@@ -17,67 +18,18 @@ public class Day05 {
 
 	public static void part1(List<String> input) {
 		var max = input.stream().mapToInt(seat -> {
-			var rowLowerBound = 0d;
-			var rowUpperBound = 127d;
-			var columnLowerBound = 0d;
-			var columnUpperBound = 7d;
-			for (var c : seat.toCharArray()) {
-				switch (c) {
-				case 'F':
-					rowUpperBound = Math.ceil((rowLowerBound + rowUpperBound) / 2);
-					break;
-				case 'B':
-					rowLowerBound = Math.ceil((rowLowerBound + rowUpperBound) / 2);
-					break;
-				case 'R':
-					columnLowerBound = Math.ceil((columnLowerBound + columnUpperBound) / 2);
-					break;
-				case 'L':
-					columnUpperBound = Math.ceil((columnLowerBound + columnUpperBound) / 2);
-					break;
-				default:
-					break;
-				}
-			}
-			return (int) rowLowerBound * 8 + (int) columnLowerBound;
+			seat = seat.replace('F', '0').replace('L', '0').replace('B', '1').replace('R', '1');
+			return Integer.parseInt(seat, 2);
 		}).max().getAsInt();
 		System.out.println(max);
 	}
 
 	public static void part2(List<String> input) {
 		var seats = input.stream().mapToInt(seat -> {
-			var rowLowerBound = 0d;
-			var rowUpperBound = 127d;
-			var columnLowerBound = 0d;
-			var columnUpperBound = 7d;
-			for (var c : seat.toCharArray()) {
-				switch (c) {
-				case 'F':
-					rowUpperBound = Math.ceil((rowLowerBound + rowUpperBound) / 2);
-					break;
-				case 'B':
-					rowLowerBound = Math.ceil((rowLowerBound + rowUpperBound) / 2);
-					break;
-				case 'R':
-					columnLowerBound = Math.ceil((columnLowerBound + columnUpperBound) / 2);
-					break;
-				case 'L':
-					columnUpperBound = Math.ceil((columnLowerBound + columnUpperBound) / 2);
-					break;
-				default:
-					break;
-				}
-			}
-			return (int) rowLowerBound * 8 + (int) columnLowerBound;
+			seat = seat.replace('F', '0').replace('L', '0').replace('B', '1').replace('R', '1');
+			return Integer.parseInt(seat, 2);
 		}).boxed().collect(Collectors.toList());
-		for (int row = 1; row < 127; row++) {
-			for (int column = 0; column < 8; column++) {
-				if (!seats.contains(row * 8 + column) && seats.contains(row * 8 + column + 1)
-						&& seats.contains(row * 8 + column - 1)) {
-					System.out.println(row * 8 + column);
-				}
-			}
-		}
+		System.out.println(IntStream.range(5, 2032).filter(i -> !seats.contains(i) && seats.contains(i-1) && seats.contains(i+1)).findFirst().getAsInt());
 	}
 
 }

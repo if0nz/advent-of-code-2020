@@ -5,6 +5,7 @@ import java.time.Instant;
 public class EveryDay {
 
 	public static void main(String[] args) throws Exception {
+		var begin = Instant.now().toEpochMilli();
 		System.out.println("D1");
 		Day01.main(null);
 		System.out.println("D2");
@@ -14,8 +15,9 @@ public class EveryDay {
 		System.out.println("D4");
 		Day04.main(null);
 		System.out.println("D5");
-		var begin = Instant.now().toEpochMilli();
 		Day05.main(null);
+		System.out.println("D6");
+		Day06.main(null);
 		System.out.println("total: "+(Instant.now().toEpochMilli()-begin));
 	}
 

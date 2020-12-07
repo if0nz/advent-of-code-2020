@@ -25,7 +25,7 @@ public class Day07 {
 	public static void part1(List<String> input) {
 		var bagContainers = new HashMap<String, List<String>>(); // for each color, I store the bags which contain them (thx LeppyR64)
 		for (var rule : input) {
-			var tokens = rule.split(" contains");
+			var tokens = rule.split(" ");
 			var container = tokens[0]+" "+tokens[1];
 			if (!"no".equals(tokens[4])) {
 				for (int i = 5; i < tokens.length; i+=4) {

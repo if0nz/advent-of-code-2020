@@ -14,12 +14,8 @@ public class Day07 {
 
 	public static void main(String[] args) throws IOException {
 		var lines = FileReader.readLines("src/main/resources/d07.txt");
-		var begin = Instant.now().toEpochMilli();
 		part1(lines);
-		System.out.println(Instant.now().toEpochMilli() - begin);
-		begin = Instant.now().toEpochMilli();
 		part2(lines);
-		System.out.println(Instant.now().toEpochMilli() - begin);
 	}
 
 	public static void part1(List<String> input) {

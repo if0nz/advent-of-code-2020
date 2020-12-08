@@ -1,7 +1,6 @@
 package it.ifonz.days.optimized;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,16 +22,14 @@ public class Day07 {
 		for (var rule : input) {
 			var tokens = rule.split(" ");
 			var container = tokens[0]+" "+tokens[1];
-			if (!"no".equals(tokens[4])) {
-				for (int i = 5; i < tokens.length; i+=4) {
-					var contained = tokens[i]+" "+tokens[i+1];
-					var bag = bagContainers.get(contained);
-					if (bag == null) {
-						bag = new ArrayList<>();
-					}
-					bag.add(container);
+			for (int i = 5; i < tokens.length; i+=4) {
+				var contained = tokens[i]+" "+tokens[i+1];
+				var bag = bagContainers.get(contained);
+				if (bag == null) {
+					bag = new ArrayList<>();
 					bagContainers.put(contained, bag);
 				}
+				bag.add(container);
 			}
 		}
 		var queue = new ArrayDeque<>(bagContainers.get("shiny gold"));
@@ -53,7 +50,7 @@ public class Day07 {
 			var tokens = rule.split(" ");
 			var container = tokens[0]+" "+tokens[1];
 			var contained = new ArrayList<Bag>();
-			if (!"no".equals(tokens[4])) {
+			if (tokens.length > 7) {
 				for (int i = 5; i < tokens.length; i+=4) {
 					contained.add(new Bag(tokens[i]+" "+tokens[i+1], Integer.parseInt(tokens[i-1])));
 				}
@@ -64,9 +61,8 @@ public class Day07 {
 	}
 	
 	public static long containedBags(HashMap<String, List<Bag>> bags, String color) {
-		var root = bags.entrySet().stream().filter(b -> b.getKey().equals(color)).findAny().get();
-		var c = root.getValue().isEmpty() ? 0 : root.getValue().stream().mapToLong(bag -> bag.contained+bag.contained * containedBags(bags, bag.color)).sum();
-		return c;
+		var root = bags.get(color);
+		return root == null ? 0 : root.stream().mapToLong(bag -> bag.contained*(1+containedBags(bags, bag.color))).sum();
 	}
 	
 	static class Bag {

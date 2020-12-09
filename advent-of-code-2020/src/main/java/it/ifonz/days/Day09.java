@@ -11,7 +11,7 @@ public class Day09 {
 
 	public static void main(String[] args) throws IOException {
 		var lines = FileReader.readLongLines("src/main/resources/d09.txt");
-//		part1(lines);
+		part1(lines);
 		part2(lines);
 	}
 

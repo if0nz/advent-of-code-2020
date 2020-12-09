@@ -15,6 +15,11 @@ public class Day09 {
 	}
 
 	public static void part1(List<Long> numbers) {
+		
+		System.out.println(findWeak(numbers));
+	}
+
+	private static Long findWeak(List<Long> numbers) {
 		var queue = new ArrayDeque<Long>(numbers);
 		var preamble = new ArrayDeque<Long>();
 		for (int i = 0; i < 25; i++) {
@@ -33,36 +38,14 @@ public class Day09 {
 				preamble.pop();
 				preamble.add(n);
 			} else {
-				System.out.println(n);
-				break;
+				return n;
 			}
 		}
+		return -1l;
 	}
 	
 	public static void part2(List<Long> numbers) {
-		var queue = new ArrayDeque<Long>(numbers);
-		var preamble = new ArrayDeque<Long>();
-		var weak = 0l;
-		for (int i = 0; i < 25; i++) {
-			preamble.add(queue.pop());
-		}
-		for (var n : queue) {
-			var found = false;
-			for (var n1 : preamble) {
-				for (var n2 : preamble) {
-					if (n1 + n2 == n) {
-						found = true;
-					}
-				}
-			}
-			if (found) {
-				preamble.pop();
-				preamble.add(n);
-			} else {
-				weak = n;
-				break;
-			}
-		}
+		var weak = findWeak(numbers);
 		var contiguous = new ArrayDeque<Long>();
 		int i = 0;
 		var sum = 0;

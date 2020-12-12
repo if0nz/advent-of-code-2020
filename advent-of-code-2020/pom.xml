@@ -6,7 +6,7 @@
 	<artifactId>advent-of-code-2020</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<java.version>13</java.version>
+		<java.version>14</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

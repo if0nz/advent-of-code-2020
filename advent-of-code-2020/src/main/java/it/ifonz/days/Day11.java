@@ -1,7 +1,6 @@
 package it.ifonz.days;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +10,8 @@ public class Day11 {
 
 	public static void main(String[] args) throws IOException {
 		var lines = FileReader.readLines("src/main/resources/d11.txt");
-		long begin = Instant.now().toEpochMilli();
 		part1(lines);
 		part2(lines);
-		System.out.println(Instant.now().toEpochMilli() - begin + "ms");
 	}
 
 	public static void part1(List<String> rows) {

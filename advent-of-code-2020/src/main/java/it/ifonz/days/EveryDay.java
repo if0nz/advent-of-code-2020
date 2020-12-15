@@ -26,6 +26,14 @@ public class EveryDay {
 		Day09.main(null);
 		System.out.println("D10");
 		Day10.main(null);
+		System.out.println("D11");
+		Day11.main(null);
+		System.out.println("D12");
+		Day12.main(null);
+		System.out.println("D13");
+		Day13.main(null);
+		System.out.println("D14");
+		Day14.main(null);
 		System.out.println("total: "+(Instant.now().toEpochMilli()-begin));
 	}
 

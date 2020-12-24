@@ -1,13 +1,8 @@
 package it.ifonz.days;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import it.ifonz.bean.Coord3D;
-import it.ifonz.bean.Coord4D;
 import it.ifonz.common.FileReader;
 
 public class Day18 {
@@ -78,7 +73,13 @@ public class Day18 {
 					if (tokens[i].equals("(")) {
 						var mem = parenthesis2(i + 1, expression, tokens);
 						i = mem.i;
-						r *= mem.r;
+						var temp = mem.r;
+						while (i+1 < tokens.length && tokens[i+1].equals("+")) {
+							mem = add(i+2, expression, tokens);
+							i = mem.i;
+							temp += mem.r;
+						}
+						r *= temp;
 					} else if (i+1 < tokens.length && tokens[i + 1].equals("+")) {
 						var mem = add(i, expression, tokens);
 						r *= mem.r;
@@ -155,7 +156,13 @@ public class Day18 {
 				if (tokens[i].equals("(")) {
 					var mem = parenthesis2(i + 1, expression, tokens);
 					i = mem.i;
-					r *= mem.r;
+					var temp = mem.r;
+					while (i+1 < tokens.length && tokens[i+1].equals("+")) {
+						mem = add(i+2, expression, tokens);
+						i = mem.i;
+						temp += mem.r;
+					}
+					r *= temp;
 				}  else if (i+1 < tokens.length && tokens[i + 1].equals("+")) { // if next operation is an add
 					var mem = add(i, expression, tokens); // eval the add
 					r *= mem.r;
@@ -195,14 +202,15 @@ public class Day18 {
 				var mem = parenthesis2(i + 1, expression, tokens);
 				i = mem.i;
 				r += mem.r;
-			} else {
+			}
+			else {
 				r = Long.parseLong(tokens[i]);
 			}
 			i++;
 		}
 		var mem = new Memory();
 		mem.r = r;
-		mem.i = i < tokens.length && tokens[i].equals("*") ? i-1:i;
+		mem.i = i < tokens.length && (tokens[i].equals("*") || tokens[i].equals(")"))? i-1:i;
 		return mem;
 	}
 
